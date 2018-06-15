@@ -3,12 +3,43 @@
 		{
 			"id": "23",
 			"firstName": "Jordan",
-			"age": 31
+			"age": 31,
+			"companyId": "201"
 		},
 		{
 			"id": "8",
 			"firstName": "Kobe",
-			"age": 24
+			"age": 22,
+			"companyId": "101"
+		},
+		{
+			"id": "2",
+			"firstName": "Kyrie",
+			"age": 25,
+			"companyId": "101"
+		},
+		{
+			"id": "34",
+			"firstName": "Shaq",
+			"age": 32,
+			"companyId": "51"
+		}
+	],
+	"companies": [
+		{
+			"id": "101",
+			"name": "Google",
+			"description": "Tech Giant"
+		},
+		{
+			"id": "201",
+			"name": "Walmart",
+			"description": "Retail Giant. Fortune 1"
+		},
+		{
+			"id": "51",
+			"name": "McDonalds",
+			"description": "Fast Food"
 		}
 	]
 }
