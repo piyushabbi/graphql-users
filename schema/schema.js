@@ -1,22 +1,9 @@
 // Schema tells graphql about the type of data contained inside the object.
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
-const _ = require('lodash');
+const axios = require('axios');
 
 const UserType = require('./user.schema');
-
-const mockData = [
-	{
-		id: '23',
-		firstName: 'Jordan',
-		age: 31
-	},
-	{
-		id: '8',
-		firstName: 'Kobe',
-		age: 24
-	}
-];
 
 /**
  * RootQuery: Required to jump and land on a specific node in the graph of data.
@@ -35,7 +22,9 @@ const RootQuery = new GraphQLObjectType({
 				}
 			},
 			resolve(parentValue, args) {
-				return _.find(mockData, { id: args.id });
+				return axios
+					.get(`http://localhost:3000/users/${args.id}`)
+					.then(res => res.data);
 			}
 		}
 	}
