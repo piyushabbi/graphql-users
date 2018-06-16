@@ -4,6 +4,7 @@ const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
 const axios = require('axios');
 
 const UserType = require('./user.schema');
+const CompanyType = require('./company.schema');
 
 /**
  * RootQuery: Required to jump and land on a specific node in the graph of data.
@@ -24,6 +25,19 @@ const RootQuery = new GraphQLObjectType({
 			resolve(parentValue, args) {
 				return axios
 					.get(`http://localhost:3000/users/${args.id}`)
+					.then(res => res.data);
+			}
+		},
+		company: {
+			type: CompanyType,
+			args: {
+				id: {
+					type: GraphQLString
+				}
+			},
+			resolve(parentValue, args) {
+				return axios
+					.get(`http://localhost:3000/companies/${args.id}`)
 					.then(res => res.data);
 			}
 		}
