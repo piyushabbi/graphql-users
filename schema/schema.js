@@ -1,10 +1,57 @@
 // Schema tells graphql about the type of data contained inside the object.
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const {
+	GraphQLObjectType,
+	GraphQLString,
+	GraphQLSchema,
+	GraphQLInt,
+	GraphQLList
+} = graphql;
 const axios = require('axios');
 
-const UserType = require('./user.schema');
-const CompanyType = require('./company.schema');
+/**
+ * Company GraphQLObject
+ * name: The name of this Objectype
+ * fields: All different properties that the company has. Each field tells the type and of the property included in the fields.
+ */
+const CompanyType = new GraphQLObjectType({
+	name: 'Company',
+	fields: () => ({
+		id: { type: GraphQLString },
+		name: { type: GraphQLString },
+		description: { type: GraphQLString },
+		users: {
+			type: new GraphQLList(UserType),
+			resolve(parentValue, args) {
+				return axios
+					.get(`http://localhost:3000/companies/${parentValue.id}/users`)
+					.then(res => res.data);
+			}
+		}
+	})
+});
+
+/**
+ * User GraphQLObject
+ * name: The name of this Objectype
+ * fields: All different properties that the user has. Each field tells the type and of the property included in the fields.
+ */
+const UserType = new GraphQLObjectType({
+	name: 'User',
+	fields: () => ({
+		id: { type: GraphQLString },
+		firstName: { type: GraphQLString },
+		age: { type: GraphQLInt },
+		company: {
+			type: CompanyType,
+			resolve(parentValue, args) {
+				return axios
+					.get(`http://localhost:3000/companies/${parentValue.companyId}`)
+					.then(res => res.data);
+			}
+		}
+	})
+});
 
 /**
  * RootQuery: Required to jump and land on a specific node in the graph of data.
